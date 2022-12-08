@@ -1,7 +1,8 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import { sayHello } from '@admin/lib'
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import { sayHello } from "@admin/lib";
+import { Button } from "@admin/ui";
 export default function Home() {
   return (
     <div className={styles.container}>
@@ -16,6 +17,7 @@ export default function Home() {
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
         {sayHello()}
+        <Button>@admin/ui</Button>
       </main>
 
       <footer className={styles.footer}>
@@ -24,12 +26,12 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
+  );
 }
