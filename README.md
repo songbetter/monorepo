@@ -43,8 +43,10 @@ yarn workspace admin run dev
 
 ## 3. 공통 컨벤션 공유하기
 ### [3-1. tsconfig 설정 공유하기](https://github.com/songbetter/yarn-berry-workspace/commit/c20d9f77196cde56dca001f85afd963581e18707)
+1. root 디렉토리에 tsconfig.base.json 파일 생성하기
+2. apps, packages에서 설정한 teconfig.json 파일 수정하기
 ### [3-2. prettier, esling 설정 공유하기](https://github.com/songbetter/yarn-berry-workspace/commit/c20d9f77196cde56dca001f85afd963581e18707)
-1.root에서 prettier, eslint 설치하기
+1. root에서 prettier, eslint 설치하기
 ```
 yarn add prettier eslint eslint-config-prettier eslint-plugin-import eslint-plugin-react eslint-plugin-react-hooks eslint-import-resolver-typescript @typescript-eslint/eslint-plugin @typescript-eslint/parser -D
 yarn dlx @yarnpkg/sdks
@@ -52,8 +54,8 @@ yarn dlx @yarnpkg/sdks
 2. root에 .eslintrc.js 파일 추가하고 워크스페이스 별 생성된 기존 파일 삭제하기
 3. .vscode/settings.json 설정 추가하기
 ```
-	"eslint.packageManager": "yarn",
-	"eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.packageManager": "yarn",
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
 ```
 ```
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -78,24 +80,31 @@ yarn workspace admin add @admin/ui
 ```
 
 ## 5. typecheck
-### 5-1. 각각의 프로젝트 typecheck하는 script 추가하기
+### [5-1. 각각의 프로젝트 typecheck하는 script 추가하기](https://github.com/songbetter/yarn-berry-workspace/commit/3d7f3c1be567a467d94b72298440c5c0e487d8ec)
 ```
 "scripts": {
     "typecheck": "tsc --project ./tsconfig.json --noEmit"
   }
 ```
-### 5-2. 모든 프로젝트를 typecheck하는 스크립트 추가하기
-1. [workspace-tools 설치하기](https://yarnpkg.com/api/modules/plugin_workspace_tools.html)
+### [5-2. 모든 프로젝트를 typecheck하는 스크립트 추가하기](https://github.com/songbetter/yarn-berry-workspace/commit/0e42c6086c8765e359fa8f1d43beb63618a56c2a)
+[workspace-tools 설치하기](https://yarnpkg.com/api/modules/plugin_workspace_tools.html)
 ```
 yarn plugin import workspace-tools
 ```
 ```
  "scripts": {
     "g:typecheck": "yarn workspaces foreach -pv run typecheck"
-  }
+ }
 ```
+### typecheck 테스트
 ```
 yarn workspace admin typecheck
+```
+## Peer Dependency
+```
+"peerDependencies":{
+	"react" : "^16.8 || 18",
+}
 ```
 ## Error
 ### [Typescript error](https://github.com/songbetter/yarn-berry-workspace/commit/ba19bf2004ee240c15639faad074c10168bd010a)
@@ -127,3 +136,4 @@ module.exports = withTM(nextConfig);
 
 ## Reference
 [yarn init](https://yarnpkg.com/cli/init)<br/>
+[yarn workspaces foreach](https://yarnpkg.com/cli/workspaces/foreach)
