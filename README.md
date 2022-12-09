@@ -41,7 +41,62 @@ yarn workspace admin run dev
 ```
 ![image](https://user-images.githubusercontent.com/75013112/206657751-1baec201-1f76-4c20-aa05-03b38cbc1912.png)
 
-##[3. ]()
+## 3. 공통 컨벤션 공유하기
+### [3-1. tsconfig 설정 공유하기](https://github.com/songbetter/yarn-berry-workspace/commit/c20d9f77196cde56dca001f85afd963581e18707)
+### [3-2. prettier, esling 설정 공유하기](https://github.com/songbetter/yarn-berry-workspace/commit/c20d9f77196cde56dca001f85afd963581e18707)
+1.root에서 prettier, eslint 설치하기
+```
+yarn add prettier eslint eslint-config-prettier eslint-plugin-import eslint-plugin-react eslint-plugin-react-hooks eslint-import-resolver-typescript @typescript-eslint/eslint-plugin @typescript-eslint/parser -D
+yarn dlx @yarnpkg/sdks
+```
+2. root에 .eslintrc.js 파일 추가하고 워크스페이스 별 생성된 기존 파일 삭제하기
+3. .vscode/settings.json 설정 추가하기
+```
+	"eslint.packageManager": "yarn",
+	"eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+```
+```
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.rulers": [120]
+```
+
+## [4. package/ui](https://github.com/songbetter/yarn-berry-workspace/commit/f16446d16a5e3a18d0f003d17345e713cd38ff56)
+1. packages/ui 폴더 및 package.json 생성하기
+2. package.json 파일을 열어서 name 변경하기
+3. root에서 yarn 갱신하기
+4. react dependency install
+```
+yarn workspace @admin/ui add typescript react react-dom @types/node @types/react @types/react-dom -D
+```
+5. packages/ui/tsconfig.json 설정하기
+6. packages/ui/src 추가 index.ts, Button/tsx 파일 생성하기
+7. packages/ui/package.json main 추가하기
+8. apps/admin에 packages/ui 의존성 주입하기
+```
+yarn workspace admin add @admin/ui
+```
+
+## 5. typecheck
+### 5-1. 각각의 프로젝트 typecheck하는 script 추가하기
+```
+"scripts": {
+    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+  }
+```
+### 5-2. 모든 프로젝트를 typecheck하는 스크립트 추가하기
+1. [workspace-tools 설치하기](https://yarnpkg.com/api/modules/plugin_workspace_tools.html)
+```
+yarn plugin import workspace-tools
+```
+```
+ "scripts": {
+    "g:typecheck": "yarn workspaces foreach -pv run typecheck"
+  }
+```
+```
+yarn workspace admin typecheck
+```
 ## Error
 ### [Typescript error](https://github.com/songbetter/yarn-berry-workspace/commit/ba19bf2004ee240c15639faad074c10168bd010a)
 ![image](https://user-images.githubusercontent.com/75013112/206661116-69409e1e-cdbc-4484-9db7-c4baceddb1ea.png)
@@ -50,5 +105,25 @@ yarn workspace admin run dev
 yarn add -D typescript
 yarn dlx @yarnpkg/sdks vscode
 ```
+
+### Typescript Compile Error
+1. typescript 파일을 javascript로 변환하기
+```
+yarn workspace admin add next-transpile-modules
+```
+2. apps/admin/next.config.js 파일 수정하기
+```
+// @admin/ui 패키지를 tranpile 시킨다.
+const withTM = require('next-transpile-modules')(['@admin/ui']);
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: true,
+};
+
+module.exports = withTM(nextConfig);
+```
+
 ## Reference
 [yarn init](https://yarnpkg.com/cli/init)<br/>
