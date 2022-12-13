@@ -17,6 +17,7 @@ export default function Home() {
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
         {sayHello()}
+        변화가 감지되지 않는단 말이여?
         <Button>@admin/ui</Button>
       </main>
 
